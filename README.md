@@ -1,0 +1,1 @@
+ampy  -p /dev/cu.usbmodem143101 ls
