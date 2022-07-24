@@ -10,15 +10,11 @@ button = Pin(14, Pin.IN, Pin.PULL_DOWN)
 
 def send(counter):
     try:
-        print("mqtt 1")
-        c = MQTTClient("client_id", "10.100.0.104", port=1883, user=None, password=None, keepalive=30, ssl=False, ssl_params={})
-        print("init mqtt")
+        c = MQTTClient("client_id", "10.100.0.10", port=1883, user=None, password=None, keepalive=30, ssl=False, ssl_params={})
         c.connect()
-        print("Connected")
-        c.publish(b"pump", str(counter))
-        print("Published")
+        c.publish(b"terstad/sewer", {"id": "sewer_pump", "value": counter})
         c.disconnect()
-        print("mqtt 2")
+        print("Published")
     except Exception as e:
         print("Failed to send mqtt")
         print(e)
@@ -29,12 +25,32 @@ def button_pressed(change):
     button_pressed_count += 1
 
 
+def load_counter():
+    c = 0
+    try:
+        with open("counter.txt", "r") as f:
+            c = float(f.read())
+            f.close()
+    except:
+        print("Failed to read counter from disk")
+    return c
+
+
+def save_counter(c):
+    try:
+        with open("counter.txt", "w") as f:
+            f.write(str(c))
+            f.close()
+    except:
+        print("Failed to read counter from disk")
+
+
 print("start")
 send(0)
 
 # global value
 button_pressed_count = 0
-running_time = 0
+counter = load_counter()
 
 wifi = WifiUtil()
 wifi.init()
@@ -44,7 +60,7 @@ button.irq(handler=button_pressed, trigger=Pin.IRQ_FALLING)
 active = False
 ts = 0
 button_pressed_count_old = 0
-counter = 0
+i = 0
 while True:
     if button_pressed_count_old != button_pressed_count:
         button_pressed_count_old = button_pressed_count
@@ -56,13 +72,14 @@ while True:
         delta = time.ticks_diff(time.ticks_ms(), ts)
         print("Turned off: ", delta/1000)
         active = False
-        running_time = running_time + (delta / 1000)
+        counter = counter + (delta / 1000)
+        save_counter(counter)
 
     time.sleep(0.5)
 
-    if counter > 20:
-        print(round(running_time))
-        send(round(running_time))
-        counter = 0
-    counter = counter + 1
+    if i > 20:
+        print(round(counter))
+        send(round(counter))
+        i = 0
+    i = i + 1
 
