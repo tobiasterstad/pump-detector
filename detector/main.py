@@ -4,19 +4,31 @@ from wlan_util import WifiUtil
 
 from umqtt.simple import MQTTClient
 
+import utime
+import json
+
 led = Pin(25, Pin.OUT)
 button = Pin(14, Pin.IN, Pin.PULL_DOWN)
+
+
+def blink(timeout=1.0):
+    led = Pin("LED", Pin.OUT)
+    led.value(1)
+    utime.sleep(timeout)
+    led.value(0)
 
 
 def send(counter):
     try:
         c = MQTTClient("client_id", "10.100.0.10", port=1883, user=None, password=None, keepalive=30, ssl=False, ssl_params={})
         c.connect()
-        c.publish(b"terstad/sewer", {"id": "sewer_pump", "value": counter})
+        data = {"id": "sewer_pump", "value": counter}
+        c.publish(b"terstad/sewer", json.dumps(data))
         c.disconnect()
         print("Published")
     except Exception as e:
         print("Failed to send mqtt")
+        blink(timeout=0.5)
         print(e)
 
 
@@ -46,7 +58,7 @@ def save_counter(c):
 
 
 print("start")
-send(0)
+blink()
 
 # global value
 button_pressed_count = 0
@@ -54,6 +66,8 @@ counter = load_counter()
 
 wifi = WifiUtil()
 wifi.init()
+
+blink()
 
 button.irq(handler=button_pressed, trigger=Pin.IRQ_FALLING)
 
@@ -81,5 +95,6 @@ while True:
         print(round(counter))
         send(round(counter))
         i = 0
+        blink(timeout=0.1)
     i = i + 1
 

@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9eb51410-e08b-4e0e-8b1a-5c30c8941e47" name="Changes" comment="Added pico project with mqtt support">
+    <list default="true" id="9eb51410-e08b-4e0e-8b1a-5c30c8941e47" name="Changes" comment="Changed topic">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/deploy.sh" beforeDir="false" afterPath="$PROJECT_DIR$/deploy.sh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/detector/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/detector/main.py" afterDir="false" />
     </list>
@@ -90,7 +91,14 @@
       <option name="project" value="LOCAL" />
       <updated>1658495100817</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Changed topic">
+      <created>1658663966105</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1658663966106</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -106,6 +114,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Added pico project with mqtt support" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added pico project with mqtt support" />
+    <MESSAGE value="Changed topic" />
+    <option name="LAST_COMMIT_MESSAGE" value="Changed topic" />
   </component>
 </project>
